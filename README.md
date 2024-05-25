@@ -31,3 +31,16 @@ terraform output
 ## Execute remote command
 
 `make remote-test`
+
+
+## Ansible learnings
+
+### Commands
+
+- `ansible-inventory -i inventory/servers.ini --list`
+- `ansible web_servers  -m ping -i inventory/servers.ini`
+
+
+### Resources
+
+- https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html

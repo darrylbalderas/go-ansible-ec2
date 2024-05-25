@@ -59,11 +59,11 @@ resource "aws_security_group" "allow_ssh" {
 }
 
 resource "aws_instance" "ec2" {
-  ami                         = var.ami
-  instance_type               = var.instance_type
-  iam_instance_profile        = aws_iam_instance_profile.ec2.name
-  key_name                    = var.pem_key_name
-  subnet_id                   = var.subnet_id
+  ami                  = var.ami
+  instance_type        = var.instance_type
+  iam_instance_profile = aws_iam_instance_profile.ec2.name
+  key_name             = var.pem_key_name
+  subnet_id            = var.subnet_id
 
   associate_public_ip_address = true
   vpc_security_group_ids = [
@@ -76,8 +76,8 @@ resource "aws_instance" "ec2" {
 }
 
 resource "local_file" "servers_ini" {
-    filename = "inventory/servers.ini"
-    content  = <<EOF
+  filename = "inventory/servers.ini"
+  content  = <<EOF
 [web_servers]
 ec2-instance ansible_host=${aws_instance.ec2.public_ip} ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/${var.pem_key_name}-use1.pem
 EOF
@@ -88,8 +88,8 @@ resource "null_resource" "generate_binary" {
     always_run = "${timestamp()}"
   }
   provisioner "local-exec" {
-    command = "GOOS=linux GOARCH=amd64 go build -o main main.go"
-    working_dir = "${path.module}"
+    command     = "GOOS=linux GOARCH=amd64 go build -o main main.go"
+    working_dir = path.module
   }
 }
 
@@ -142,10 +142,10 @@ variable "instance_name" {
 }
 
 variable "ssh_ips" {
-  type = list(string)
+  type        = list(string)
   description = "IPs address to allow SSH access from."
 }
 
 output "servers_ini_path" {
-    value = local_file.servers_ini.filename
+  value = local_file.servers_ini.filename
 }

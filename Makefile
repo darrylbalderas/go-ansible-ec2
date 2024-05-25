@@ -5,7 +5,12 @@ login:
 	ssh -i "~/.ssh/$(EC2_PEM_KEY)-use1.pem" ec2-user@$(EC2_PUBLIC_IP)
 
 setup:
-	ansible-playbook -i inventory/servers.ini playbooks/ec2_setup.yml
+	ansible-playbook -i inventory/servers.ini playbooks/01_setup_ec2.yml
 
 remote-test:
 	ssh -i "~/.ssh/$(EC2_PEM_KEY)-use1.pem" ec2-user@$(EC2_PUBLIC_IP) ./main
+
+lint:
+	go fmt ./...
+	ansible-lint playbooks/*.yml
+	terraform fmt --recursive

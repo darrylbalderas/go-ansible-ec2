@@ -1,0 +1,54 @@
+
+- name: Deploy binary to EC2 instance
+  hosts: web_servers
+  become: true
+  vars:
+    list1:
+    - apple
+    - banana
+    - fig
+    list2:
+    - peach
+    - plum
+    - pear
+  tasks:
+    - name: Ping my hosts
+      ansible.builtin.ping:
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: Hello world
+
+    - name: Install a list of packages
+      ansible.builtin.package:
+        name:
+          - git
+          - curl
+
+    - name: Create directory for personal scripts
+      ansible.builtin.file:
+        state: directory
+        recurse: true
+        path: /home/ec2-user/scripts
+
+    - name: Copy binary to EC2 instance
+      ansible.builtin.copy:
+        src: ../main
+        dest: /home/ec2-user/main
+        mode: '0755'
+
+    - name: Verify binary permissions
+      ansible.builtin.command:
+        cmd: ls -l /home/ec2-user/main
+      register: verify_binary_permissions
+      changed_when: verify_binary_permissions.rc != 0
+
+    - name: Run the binary (optional)
+      ansible.builtin.command:
+        cmd: /home/ec2-user/main
+      register: binary_output
+      changed_when: binary_output.rc != 0
+
+    - name: Display binary output (optional)
+      ansible.builtin.debug:
+        var: binary_output.stdout_lines
