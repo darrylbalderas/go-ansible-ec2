@@ -1,0 +1,14 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+*.tfstate*
+*.tfplan
+main
+
+# Python
+*.py
+venv/*
+inventory/*
