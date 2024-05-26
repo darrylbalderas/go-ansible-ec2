@@ -32,6 +32,10 @@ terraform output
 
 `make remote-test`
 
+## Clean up
+
+`terraform destroy`
+
 
 ## Ansible learnings
 
